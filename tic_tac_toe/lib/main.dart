@@ -6,7 +6,14 @@ void main() {
   runApp(TicTacToe());
 }
 
-class TicTacToe extends StatelessWidget {
+class TicTacToe extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _TicTacToeState();
+  }
+}
+
+class _TicTacToeState extends State<TicTacToe> {
 
   void _markField() {
     print('Button click!');
