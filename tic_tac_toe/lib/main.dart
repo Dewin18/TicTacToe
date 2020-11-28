@@ -17,8 +17,9 @@ class _TicTacToeState extends State<TicTacToe> {
   final _symbols = ['', '', '', '', '', '', '' ,'', '', ''];
   String _symbol = 'X';
   String _player = '1';
+  int _playerOneScore = 0;
+  int _playerTwoScore = 0;
   bool _absorbingEvents = false;
-
 
   void _markField() {
     _changeSymbol();
@@ -75,11 +76,35 @@ class _TicTacToeState extends State<TicTacToe> {
     return (_player == '1') ? '2' : '1';
   }
 
+  bool _isPlayFieldFull() {
+    int counter = 0;
+    for(int i = 0; i < _symbols.length; i++) {
+      if (_symbols[i] != '') {
+        counter++;
+      }
+    }
+    return counter == 9;
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    bool isGameOver = _checkIfWon();
-    print(isGameOver);
+    bool playerWins = _checkIfWon();
+    bool isDraw = !playerWins && _isPlayFieldFull();
+
+    String dialogText;
+    if(isDraw) {
+      dialogText = 'Draw.';
+    } else if(playerWins) {
+      String nextPlayer = getNextPlayer();
+      String nextSymbol = getNextSymbol();
+      dialogText = 'Player $nextPlayer ($nextSymbol) won!';
+      nextPlayer == 'X' ? _playerTwoScore++ : _playerOneScore++;
+      print('Next player: ' + nextPlayer);
+    }
+
+
+    print(playerWins);
 
     return MaterialApp(
       home: Scaffold(
@@ -90,18 +115,31 @@ class _TicTacToeState extends State<TicTacToe> {
           margin: EdgeInsets.all(10),
           child: Column(
             children: [
-              Text('Player ' + _player),
+              Text('Next ($_symbol)'),
               Stack(
                 children: [
                   AbsorbPointer(
-                    absorbing: isGameOver,
-                    child:  PlayField(_markField, _symbols, _symbol),
+                    absorbing: playerWins,
+                    child: Column(
+                      children: [
+                        PlayField(_markField, _symbols, _symbol),
+                        Text('(X)  - $_playerTwoScore : $_playerOneScore -  (O)'),
+                        RaisedButton(
+                            child: Text('New game'),
+                            onPressed: () {
+                              _resetEverything();
+                              _playerOneScore = 0;
+                              _playerTwoScore = 0;
+                            }
+                        )
+                      ],
+                    ), //
                   ),
 
-                  if(isGameOver)
+                  if(playerWins || isDraw)
                     SimpleDialog(
                       //backgroundColor: Color.fromARGB(1, 1, 1, 1),
-                      title: Text('Player ' + getNextPlayer() +  ' (' + getNextSymbol() +') won!'),
+                      title: Text(dialogText),
                       children: [
                         RaisedButton(
                             child: Text('Start new game'),
@@ -117,6 +155,4 @@ class _TicTacToeState extends State<TicTacToe> {
       ),
     );
   }
-
-
 }
