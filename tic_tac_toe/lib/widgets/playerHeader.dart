@@ -9,6 +9,36 @@ class PlayerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Player $player ($symbol)');
+    return Container(
+        margin: EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Next: ',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            /*Text(
+              'Player $player ',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),*/
+            Text(
+              '$symbol',
+              style: TextStyle(
+                fontFamily: 'Permanent Marker',
+                fontSize: 16,
+                color: symbol == 'X'
+                    ? Colors.red
+                    : Colors.blue,
+              ),
+            )
+          ],
+        )
+    );
   }
 }

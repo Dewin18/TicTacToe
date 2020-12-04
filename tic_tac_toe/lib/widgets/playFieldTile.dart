@@ -12,7 +12,17 @@ class PlayFieldTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      child: Text(symbols[symbolIndex]),
+      child: Text(
+        symbols[symbolIndex],
+        style: TextStyle(
+          fontFamily: 'Permanent Marker',
+          fontSize: 60,
+          color: symbols[symbolIndex] == 'X'
+              ? Colors.red
+              : Colors.blue
+        ),
+
+      ),
       onPressed: () {
         if(symbols[symbolIndex] == '') {
           symbols[symbolIndex] = symbol;

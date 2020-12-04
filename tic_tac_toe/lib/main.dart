@@ -34,9 +34,10 @@ class GameContent extends StatefulWidget {
 class _GameContentState extends State<GameContent> {
   final _symbols = List.generate(9, (index) => '');
 
-  String _symbol = 'x';
+  String _symbol = 'X';
   String _player = '1';
-  int _playerOneScore, _playerTwoScore = 0;
+  int _playerOneScore = 0;
+  int _playerTwoScore = 0;
 
   void _newGame() {
     setState(() {
